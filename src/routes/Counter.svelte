@@ -1,37 +1,45 @@
 <script lang="ts">
-	import { spring } from 'svelte/motion';
+	import {onMount} from 'svelte';
+	import { countVal } from '../store/counterStore.ts';
 
-	let count = 0;
-
-	const displayed_count = spring();
-	$: displayed_count.set(count);
-	$: offset = modulo($displayed_count, 1);
-
-	function modulo(n: number, m: number) {
-		// handle negative numbers
-		return ((n % m) + m) % m;
+	export let initialValue;
+	
+	const addOne = () => {
+		countVal.update((prevVal) => prevVal+=1)
 	}
+
+	const subtractOne = () => {
+		 countVal.update((prevVal) => prevVal >= 1 ? prevVal-=1 : prevVal)
+	}
+
+	const reset = () => {
+		initialValue >= 0 ? countVal.set(initialValue) : countVal.set(0)
+	}
+
+	onMount(() => {
+		initialValue >= 0 && countVal.set(initialValue)
+	});
+
 </script>
 
 <div class="counter">
-	<button on:click={() => (count -= 1)} aria-label="Decrease the counter by one">
+	<button on:click={subtractOne} aria-label="Decrease the counter by one">
 		<svg aria-hidden="true" viewBox="0 0 1 1">
 			<path d="M0,0.5 L1,0.5" />
 		</svg>
 	</button>
 
-	<div class="counter-viewport">
-		<div class="counter-digits" style="transform: translate(0, {100 * offset}%)">
-			<strong class="hidden" aria-hidden="true">{Math.floor($displayed_count + 1)}</strong>
-			<strong>{Math.floor($displayed_count)}</strong>
-		</div>
-	</div>
+	<button on:click={reset} aria-label="Reset the counter">
+		<h6>Reset</h6>
+	</button>
 
-	<button on:click={() => (count += 1)} aria-label="Increase the counter by one">
+	<button on:click={addOne} aria-label="Increase the counter by one">
 		<svg aria-hidden="true" viewBox="0 0 1 1">
 			<path d="M0,0.5 L1,0.5 M0.5,0 L0.5,1" />
 		</svg>
 	</button>
+
+	
 </div>
 
 <style>
@@ -44,6 +52,7 @@
 
 	.counter button {
 		width: 2em;
+		height: 1em;
 		padding: 0;
 		display: flex;
 		align-items: center;

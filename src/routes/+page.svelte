@@ -1,7 +1,10 @@
 <script>
 	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import { countVal } from '../store/counterStore.ts'
+
+	let count = 0;
+	countVal.subscribe((val) => count = val)
+
 </script>
 
 <svelte:head>
@@ -11,21 +14,14 @@
 
 <section>
 	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
+		Svelte counter
 	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
+	<div class="counter-viewport">
+			<h1>
+				{count}
+			</h1>
+	</div>
+	<Counter initialValue={5}/>
 </section>
 
 <style>
@@ -55,5 +51,13 @@
 		height: 100%;
 		top: 0;
 		display: block;
+	}
+
+	.counter-viewport {
+		width: 8em;
+		height: 4em;
+		overflow: hidden;
+		text-align: center;
+		position: relative;
 	}
 </style>
