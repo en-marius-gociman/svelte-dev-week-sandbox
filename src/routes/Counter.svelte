@@ -3,7 +3,7 @@
 	import { countVal } from '../store/counterStore.ts';
 
 	export let initialValue;
-	
+
 	const addOne = () => {
 		countVal.update((prevVal) => prevVal+=1)
 	}
@@ -78,34 +78,4 @@
 		stroke: #444;
 	}
 
-	.counter-viewport {
-		width: 8em;
-		height: 4em;
-		overflow: hidden;
-		text-align: center;
-		position: relative;
-	}
-
-	.counter-viewport strong {
-		position: absolute;
-		display: flex;
-		width: 100%;
-		height: 100%;
-		font-weight: 400;
-		color: var(--color-theme-1);
-		font-size: 4rem;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.counter-digits {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-
-	.hidden {
-		top: -100%;
-		user-select: none;
-	}
 </style>
